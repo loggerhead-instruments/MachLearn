@@ -45,6 +45,10 @@ with open(out_path, 'w', newline='') as new_file:
                         except:
                             print("ERROR ADDING COLUMNS: PROBLEM WITH " + file_path)
 
+                    # Swap Auditor and Class column for SG auditor
+                    if line[7] == 'SG':
+                        line[7], line[8] = line[8], line[7]
+
                     csv_write.writerow(line)
 
             except:
