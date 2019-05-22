@@ -5,6 +5,7 @@ import pandas as pd
 df_path = r"D:\cleaned_concat_fix.csv"
 wav_path = r"D:\wavs"
 wav_out = r"D:\Sliced_Files"
+large_wav_out = r"D:\Large_Sliced_Files"
 
 sounds_df = pd.read_csv(df_path)
 
@@ -52,8 +53,8 @@ for row in sounds_df.itertuples():
                 if len(audio_slice) < 1000:
                     audio_slice = wavfile[-1000:]
 
-                audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "-" +
-                                   str(row[7]) + "-" + row[6], format="wav")
+                audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "~" +
+                                   str(row[7]) + "~" + row[6], format="wav")
 
             # If length is between one and two seconds
             elif 1 <= row[4] < 2:
@@ -65,14 +66,19 @@ for row in sounds_df.itertuples():
                 if len(audio_slice) < 1000:
                     audio_slice = wavfile[-1000:]
 
-                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
-                                   str(row[7]) + "-" + row[6], format="wav")
+                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "~" +
+                                   str(row[7]) + "~" + row[6], format="wav")
 
             # Length is bigger than two seconds
             else:
-                audio_slice = wavfile[row[2]*1000:row[3]*1000]
-                audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "-" +
-                                   str(row[7]) + "-" + row[6], format="wav")
+                audio_slice = wavfile[row[2] * 1000:row[3] * 1000]
+
+                # Splitting sound into one second chunks
+                for i, chunk in enumerate(audio_slice[::1000]):
+                    with open(large_wav_out + "\\" + row[1] + "\\" + row[1] + "~" +
+                              str(row[7]) + "~" + row[6][:-4] + "~" + str(i) + ".wav", "wb") as f:
+                        if len(chunk) == 1000:
+                            chunk.export(f, format="wav")
 
     # Else if this is the same sound file as previous row
     elif row[6] == sound_file:
@@ -87,8 +93,8 @@ for row in sounds_df.itertuples():
             if len(audio_slice) < 1000:
                 audio_slice = wavfile[-1000:]
 
-            audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "-" +
-                               str(row[7]) + "-" + row[6], format="wav")
+            audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "~" +
+                               str(row[7]) + "~" + row[6], format="wav")
 
         # If length is between one and two seconds
         elif 1 < row[4] < 2:
@@ -100,14 +106,19 @@ for row in sounds_df.itertuples():
             if len(audio_slice) < 1000:
                 audio_slice = wavfile[-1000:]
 
-            audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
-                               str(row[7]) + "-" + row[6], format="wav")
+            audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "~" +
+                               str(row[7]) + "~" + row[6], format="wav")
 
         # Length is bigger than two seconds
         else:
-            audio_slice = wavfile[row[2]*1000:row[3]*1000]
-            audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "-" +
-                               str(row[7]) + "-" + row[6], format="wav")
+            audio_slice = wavfile[row[2] * 1000:row[3] * 1000]
+
+            # Splitting sound into one second chunks
+            for i, chunk in enumerate(audio_slice[::1000]):
+                with open(large_wav_out + "\\" + row[1] + "\\" + row[1] + "~" +
+                          str(row[7]) + "~" + row[6][:-4] + "~" + str(i) + ".wav", "wb") as f:
+                    if len(chunk) == 1000:
+                        chunk.export(f, format="wav")
 
     # This is a new file compared to previous row
     else:
@@ -126,8 +137,8 @@ for row in sounds_df.itertuples():
                 if len(audio_slice) < 1000:
                     audio_slice = wavfile[-1000:]
 
-                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
-                                   str(row[7]) + "-" + row[6], format="wav")
+                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "~" +
+                                   str(row[7]) + "~" + row[6], format="wav")
 
             # If length is between one and two seconds
             elif 1 < row[4] < 2:
@@ -139,13 +150,18 @@ for row in sounds_df.itertuples():
                 if len(audio_slice) < 1000:
                     audio_slice = wavfile[-1000:]
 
-                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
-                                   str(row[7]) + "-" + row[6], format="wav")
+                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "~" +
+                                   str(row[7]) + "~" + row[6], format="wav")
 
             # Length is bigger than two seconds
             else:
                 audio_slice = wavfile[row[2] * 1000:row[3] * 1000]
-                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
-                                   str(row[7]) + "-" + row[6], format="wav")
+
+                # Splitting sound into one second chunks
+                for i, chunk in enumerate(audio_slice[::1000]):
+                    with open(large_wav_out + "\\" + row[1] + "\\" + row[1] + "~" +
+                              str(row[7]) + "~" + row[6][:-4] + "~" + str(i) + ".wav", "wb") as f:
+                        if len(chunk) == 1000:
+                            chunk.export(f, format="wav")
 
 # 2018-05-01T051000_0004e9e50005718b_2.0.wav did not exist in wav folder. Removed from csv!
