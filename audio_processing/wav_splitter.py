@@ -18,6 +18,7 @@ def length_extender(length):
     return new_start
 
 
+# Row: Index, Class, Start, End, Length, Date, File, Selection
 for row in sounds_df.itertuples():
 
     # If first row of data, load sound file
