@@ -16,6 +16,9 @@ def length_extender(length):
     # row[2] refers to the relevant start float in the csv
     new_start = row[2] - side_extend
 
+    if new_start < 0:
+        new_start = 0
+
     return new_start
 
 
@@ -44,6 +47,11 @@ for row in sounds_df.itertuples():
                 start = length_extender(row[4])
 
                 audio_slice = wavfile[start*1000:(start+1)*1000]
+
+                # If the slice is not one second (issue with end of file)
+                if len(audio_slice) < 1000:
+                    audio_slice = wavfile[-1000:]
+
                 audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "-" +
                                    str(row[7]) + "-" + row[6], format="wav")
 
@@ -52,6 +60,11 @@ for row in sounds_df.itertuples():
                 start = length_shortener(row[4])
 
                 audio_slice = wavfile[start * 1000:(start + 1) * 1000]
+
+                # If the slice is not one second (issue with end of file)
+                if len(audio_slice) < 1000:
+                    audio_slice = wavfile[-1000:]
+
                 audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
                                    str(row[7]) + "-" + row[6], format="wav")
 
@@ -69,6 +82,11 @@ for row in sounds_df.itertuples():
             start = length_extender(row[4])
 
             audio_slice = wavfile[start*1000:(start+1)*1000]
+
+            # If the slice is not one second (issue with end of file)
+            if len(audio_slice) < 1000:
+                audio_slice = wavfile[-1000:]
+
             audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "-" +
                                str(row[7]) + "-" + row[6], format="wav")
 
@@ -77,6 +95,11 @@ for row in sounds_df.itertuples():
             start = length_shortener(row[4])
 
             audio_slice = wavfile[start * 1000:(start + 1) * 1000]
+
+            # If the slice is not one second (issue with end of file)
+            if len(audio_slice) < 1000:
+                audio_slice = wavfile[-1000:]
+
             audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
                                str(row[7]) + "-" + row[6], format="wav")
 
@@ -98,6 +121,11 @@ for row in sounds_df.itertuples():
                 start = length_extender(row[4])
 
                 audio_slice = wavfile[start * 1000:(start + 1) * 1000]
+
+                # If the slice is not one second (issue with end of file)
+                if len(audio_slice) < 1000:
+                    audio_slice = wavfile[-1000:]
+
                 audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
                                    str(row[7]) + "-" + row[6], format="wav")
 
@@ -106,6 +134,11 @@ for row in sounds_df.itertuples():
                 start = length_shortener(row[4])
 
                 audio_slice = wavfile[start * 1000:(start + 1) * 1000]
+
+                # If the slice is not one second (issue with end of file)
+                if len(audio_slice) < 1000:
+                    audio_slice = wavfile[-1000:]
+
                 audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
                                    str(row[7]) + "-" + row[6], format="wav")
 
@@ -116,5 +149,3 @@ for row in sounds_df.itertuples():
                                    str(row[7]) + "-" + row[6], format="wav")
 
 # 2018-05-01T051000_0004e9e50005718b_2.0.wav did not exist in wav folder. Removed from csv!
-
-# Tursiops_truncatus_Whistle-3-2018-04-30T022000_0004e9e50005718b_2.0 output seems incorrect
