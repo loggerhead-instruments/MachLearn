@@ -35,29 +35,31 @@ for row in sounds_df.itertuples():
     # If first row of data, load sound file
     if row[0] == 0:
         sound_file = row[6]
-        wavfile = AudioSegment.from_wav(wav_path + "\\" + sound_file)
 
-        # If length is less than one second
-        if row[4] < 1:
-            start = length_extender(row[4])
+        with open(wav_path + "\\" + sound_file, "rb") as wav_file:
+            wavfile = AudioSegment.from_file(wav_file, format="wav")
 
-            audio_slice = wavfile[start*1000:(start+1)*1000]
-            audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "-" +
-                               str(row[7]) + "-" + row[6], format="wav")
+            # If length is less than one second
+            if row[4] < 1:
+                start = length_extender(row[4])
 
-        # If length is between one and two seconds
-        elif 1 <= row[4] < 2:
-            start = length_shortener(row[4])
+                audio_slice = wavfile[start*1000:(start+1)*1000]
+                audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "-" +
+                                   str(row[7]) + "-" + row[6], format="wav")
 
-            audio_slice = wavfile[start * 1000:(start + 1) * 1000]
-            audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
-                               str(row[7]) + "-" + row[6], format="wav")
+            # If length is between one and two seconds
+            elif 1 <= row[4] < 2:
+                start = length_shortener(row[4])
 
-        # Length is bigger than two seconds
-        else:
-            audio_slice = wavfile[row[2]*1000:row[3]*1000]
-            audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "-" +
-                               str(row[7]) + "-" + row[6], format="wav")
+                audio_slice = wavfile[start * 1000:(start + 1) * 1000]
+                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
+                                   str(row[7]) + "-" + row[6], format="wav")
+
+            # Length is bigger than two seconds
+            else:
+                audio_slice = wavfile[row[2]*1000:row[3]*1000]
+                audio_slice.export(wav_out+"\\" + row[1] + "\\"+row[1] + "-" +
+                                   str(row[7]) + "-" + row[6], format="wav")
 
     # Else if this is the same sound file as previous row
     elif row[6] == sound_file:
@@ -87,29 +89,31 @@ for row in sounds_df.itertuples():
     # This is a new file compared to previous row
     else:
         sound_file = row[6]
-        wavfile = AudioSegment.from_wav(wav_path + "\\" + sound_file)
 
-        # If length is less than one second
-        if row[4] < 1:
-            start = length_extender(row[4])
+        with open(wav_path + "\\" + sound_file, "rb") as wav_file:
+            wavfile = AudioSegment.from_file(wav_file, format="wav")
 
-            audio_slice = wavfile[start * 1000:(start + 1) * 1000]
-            audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
-                               str(row[7]) + "-" + row[6], format="wav")
+            # If length is less than one second
+            if row[4] < 1:
+                start = length_extender(row[4])
 
-        # If length is between one and two seconds
-        elif 1 < row[4] < 2:
-            start = length_shortener(row[4])
+                audio_slice = wavfile[start * 1000:(start + 1) * 1000]
+                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
+                                   str(row[7]) + "-" + row[6], format="wav")
 
-            audio_slice = wavfile[start * 1000:(start + 1) * 1000]
-            audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
-                               str(row[7]) + "-" + row[6], format="wav")
+            # If length is between one and two seconds
+            elif 1 < row[4] < 2:
+                start = length_shortener(row[4])
 
-        # Length is bigger than two seconds
-        else:
-            audio_slice = wavfile[row[2] * 1000:row[3] * 1000]
-            audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
-                               str(row[7]) + "-" + row[6], format="wav")
+                audio_slice = wavfile[start * 1000:(start + 1) * 1000]
+                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
+                                   str(row[7]) + "-" + row[6], format="wav")
+
+            # Length is bigger than two seconds
+            else:
+                audio_slice = wavfile[row[2] * 1000:row[3] * 1000]
+                audio_slice.export(wav_out + "\\" + row[1] + "\\" + row[1] + "-" +
+                                   str(row[7]) + "-" + row[6], format="wav")
 
 # 2018-05-01T051000_0004e9e50005718b_2.0.wav did not exist in wav folder. Removed from csv!
 
